@@ -1,0 +1,42 @@
+{
+    "name": "gdevilbat/sparda-cms-blog-module",
+    "description": "",
+    "authors": [
+        {
+            "name": "M.Aldi Nur Ibrahim",
+            "email": "maldinuribrahim@gmail.com"
+        }
+    ],
+    "require": {
+        "gdevilbat/sparda-cms-core-module": "^5.7.2",
+        "gdevilbat/sparda-cms-appearance-module": "^2.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Gdevilbat\\SpardaCMS\\Modules\\Blog\\Providers\\BlogServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Gdevilbat\\SpardaCMS\\Modules\\Blog\\": ""
+        },
+        "exclude-from-classmap": [
+            "/preprocessor/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+          "Gdevilbat\\SpardaCMS\\Modules\\Blog\\Tests\\": "Tests"
+        }
+    },
+    "archive": {
+        "exclude": ["/Tests", "/preprocessor"]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
