@@ -57,7 +57,7 @@ class BlogController extends CoreController
 
     public function blog($year, $month, $slug)
     {
-        $this->data['post'] = $this->post_m::with('postMeta')
+        $this->data['post'] = $this->post_m::with('postMeta', 'author')
                                             ->where(['post_slug' => $slug, 'post_type' => 'post', 'post_status' => 'publish'])
                                             ->whereYear('created_at', $year)
                                             ->whereMonth('created_at', $month)
@@ -69,6 +69,14 @@ class BlogController extends CoreController
                                             ->latest('created_at')
                                             ->limit(5)
                                             ->get();
+
+        $this->data['post_categories'] = $this->data['post']->load(['taxonomies' => function($query){
+                                            $query->where('taxonomy', 'category');
+                                        }, 'taxonomies.term'])->taxonomies;
+
+         $this->data['post_tags'] = $this->data['post']->load(['taxonomies' => function($query){
+                                            $query->where('taxonomy', 'tag');
+                                        }, 'taxonomies.term'])->taxonomies;
 
         $menu = new MenuController;
         $this->data['category_widget'] = json_decode(json_encode($menu->getTaxonomyNavbar()));
