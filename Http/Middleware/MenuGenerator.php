@@ -18,12 +18,15 @@ class MenuGenerator
      */
     public function handle(Request $request, Closure $next)
     {
-        $navbars = new MenuController;
-        $navbars = json_decode(json_encode($navbars->getNavbars()));
+        $menu = new MenuController;
+
+        $navbars = json_decode(json_encode($menu->getNavbars()));
+        $post_navbars = json_decode(json_encode($menu->getPostNavbar()));
 
         \View::share(
                 [
                 'navbars' => $navbars,
+                'post_navbars' => $post_navbars,
             ]
         );
 

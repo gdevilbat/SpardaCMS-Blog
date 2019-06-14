@@ -11,6 +11,7 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.less('less/classic.less', '../../css/classic.css').options({
+mix.js('js/classic.js', '../../js/classic.js')
+	.less('less/classic.less', '../../css/classic.css').options({
       processCssUrls: false
    });

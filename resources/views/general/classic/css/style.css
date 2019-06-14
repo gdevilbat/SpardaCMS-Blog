@@ -227,7 +227,7 @@ input:-webkit-autofill:focus {
 /*-- 5. Mainmenu-Area --*/
 
 .mainmenu-area {
-    position: fixed;
+    /* position: fixed; */
     top: 0;
     left: 0;
     padding: 15px 0;

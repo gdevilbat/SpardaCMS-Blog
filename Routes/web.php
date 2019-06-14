@@ -13,7 +13,21 @@
 
 Route::group(['middleware' => 'blog.navbars'], function() {
 	Route::get('/', 'BlogController@index');
-	Route::get('tag/{slug}', 'BlogController@index')->where('slug','[0-9A-Za-z-/]+');
-	Route::get('category/{slug}', 'BlogController@index')->where('slug','[0-9A-Za-z-/]+');
-	Route::get('{slug}', 'BlogController@index')->where('slug','[0-9A-Za-z-/]+');
+	Route::get('{year}/{month}/{slug}.html', 'BlogController@blog');
+
+	/*================================
+	=            Taxonomy            =
+	================================*/
+	
+		$taxonomy = \Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::groupBy('taxonomy')->pluck('taxonomy');
+
+		foreach ($taxonomy as $key => $value) 
+		{
+			Route::get($value.'/{slug}', 'BlogController@taxonomyPost')->where('slug','[0-9A-Za-z-/]+');
+		}
+	
+	/*=====  End of Taxonomy  ======*/
+	
+
+	Route::get('{slug}', 'BlogController@page')->where('slug','[0-9A-Za-z-/]+');
 });
