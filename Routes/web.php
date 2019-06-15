@@ -29,5 +29,5 @@ Route::group(['middleware' => 'blog.navbars'], function() {
 	/*=====  End of Taxonomy  ======*/
 	
 
-	Route::get('{slug}', 'BlogController@page')->where('slug','[0-9A-Za-z-/]+');
+	Route::get('{slug}', 'BlogController@page');
 });

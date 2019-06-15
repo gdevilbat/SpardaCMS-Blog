@@ -4,7 +4,7 @@
     <section>
         <div class="container">
             <div class="row py-2">
-                <div class="col-lg-7 bg-light py-2">
+                <div class="col-lg-7 py-2">
                     <div>
                           <h3 class="upper">{{$post->post_title}} </h3> 
                     </div>
