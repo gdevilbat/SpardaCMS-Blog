@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['middleware' => 'blog.navbars'], function() {
+Route::group(['middleware' => 'appearance.navbars'], function() {
 	Route::get('/', 'BlogController@index');
 	Route::get('{year}/{month}/{slug}.html', 'BlogController@blog');
 

@@ -30,7 +30,7 @@ class BlogController extends CoreController
     public function index()
     {
         $this->data['post'] = $this->post_m->where('post_slug', 'homepage')->first();
-        $path_view = 'blog::general.'.$this->data['theme_public']->value.'.templates.parent';
+        $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
 
         if(empty($this->data['post']))
         {
@@ -40,15 +40,15 @@ class BlogController extends CoreController
 
         if(file_exists(module_asset_path('blog:resources/views/general/'.$this->data['theme_public']->value.'/content/homepage.blade.php')))
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.homepage';
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.homepage';
         }
         elseif(file_exists(module_asset_path('blog:resources/views/general/'.$this->data['theme_public']->value.'/content/page.blade.php')))
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.page';
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.page';
         }
         else
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.post';
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.post';
         }
 
         return response()
@@ -81,7 +81,7 @@ class BlogController extends CoreController
         $menu = new MenuController;
         $this->data['category_widget'] = json_decode(json_encode($menu->getTaxonomyNavbar()));
 
-        $path_view = 'blog::general.'.$this->data['theme_public']->value.'.templates.parent';
+        $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
 
         if(empty($this->data['post']))
         {
@@ -91,19 +91,19 @@ class BlogController extends CoreController
 
         if(file_exists(module_asset_path('blog:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->id.'.blade.php')))
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type.'-'.$this->data['post']->id;
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type.'-'.$this->data['post']->id;
         }
         elseif(file_exists(module_asset_path('blog:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->post_slug.'.blade.php')))
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type.'-'.$this->data['post']->post_slug;
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type.'-'.$this->data['post']->post_slug;
         }
         elseif(file_exists(module_asset_path('blog:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_slug.'.blade.php')))
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_slug;
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_slug;
         }
         else
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.post';
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.post';
         }
 
         return response()
@@ -117,7 +117,7 @@ class BlogController extends CoreController
                                                 ->where(['post_slug' => $slug, 'post_type' => 'page', 'post_status' => 'publish'])
                                                 ->first();
 
-        $path_view = 'blog::general.'.$this->data['theme_public']->value.'.templates.parent';
+        $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
 
         if(empty($this->data['post']))
         {
@@ -127,19 +127,19 @@ class BlogController extends CoreController
 
         if(file_exists(module_asset_path('blog:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->id.'.blade.php')))
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type.'-'.$this->data['post']->id;
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type.'-'.$this->data['post']->id;
         }
         elseif(file_exists(module_asset_path('blog:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->post_slug.'.blade.php')))
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type.'-'.$this->data['post']->post_slug;
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type.'-'.$this->data['post']->post_slug;
         }
         elseif(file_exists(module_asset_path('blog:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'.blade.php')))
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type;
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type;
         }
         else
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.post';
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.post';
         }
 
         return response()
@@ -148,7 +148,7 @@ class BlogController extends CoreController
 
     public function taxonomyPost(Request $request, $slug)
     {
-        $path_view = 'blog::general.'.$this->data['theme_public']->value.'.templates.parent';
+        $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
 
 
         $menu_controller = new MenuController;
@@ -173,19 +173,19 @@ class BlogController extends CoreController
 
         if(file_exists(module_asset_path('blog:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$request->segment(1).'-'.$term->id.'.blade.php')))
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.'.$request->segment(1).'-'.$term->id;
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$request->segment(1).'-'.$term->id;
         }
         elseif(file_exists(module_asset_path('blog:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$request->segment(1).'-'.str_slug($slug).'.blade.php')))
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.'.$request->segment(1).'-'.str_slug($slug);
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$request->segment(1).'-'.str_slug($slug);
         }
         elseif(file_exists(module_asset_path('blog:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$request->segment(1).'.blade.php')))
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.'.$request->segment(1);
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$request->segment(1);
         }
         else
         {
-            $path_view = 'blog::general.'.$this->data['theme_public']->value.'.content.taxonomy';
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.taxonomy';
         }
 
 
