@@ -179,16 +179,14 @@ class BlogController extends CoreController
         });
 
 
-        $posts = $query->with($whereHas)->get();
+        $this->data['posts'] = $query->with($whereHas)->get();
         $this->data['taxonomy'] = $taxonomy;
 
-        if($posts->count() == 0)
+        if($this->data['posts']->count() == 0)
         {
             return response()
                 ->view($path_view, $this->data, 404);
         }
-
-        $this->data['group_posts'] = $posts->chunk(4);
 
         if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$request->segment(1).'-'.$taxonomy->getKey().'.blade.php')))
         {
