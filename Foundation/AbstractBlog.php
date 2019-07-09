@@ -116,4 +116,9 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
         $menu = new MenuController;
         return json_decode(json_encode($menu->getTaxonomyNavbar()));
     }
+
+    public function getPostType()
+    {
+        return $this->post_type;
+    }
 }

@@ -135,9 +135,4 @@ class BlogController extends AbstractBlog
         return response()
             ->view($path_view, $this->data);
     }
-
-    public function getPostType()
-    {
-        return $this->post_type;
-    }
 }
