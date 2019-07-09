@@ -18,13 +18,21 @@ Route::group(['middleware' => 'appearance.navbars'], function() {
 	/*================================
 	=            Taxonomy            =
 	================================*/
-	
-		$taxonomy = \Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::groupBy('taxonomy')->pluck('taxonomy');
 
-		foreach ($taxonomy as $key => $value) 
+		if(!App::environment('testing'))
 		{
-			Route::get($value.'/{slug}', 'BlogController@taxonomyPost')->where('slug','[0-9A-Za-z-/]+');
+			$taxonomy = \Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::groupBy('taxonomy')->pluck('taxonomy');
+
+			foreach ($taxonomy as $key => $value) 
+			{
+				Route::get($value.'/{slug}', 'BlogController@taxonomyPost')->where('slug','[0-9A-Za-z-/]+');
+			}
 		}
+		else
+		{
+			Route::get('category/{slug}', 'BlogController@taxonomyPost')->where('slug','[0-9A-Za-z-/]+');
+		}
+	
 	
 	/*=====  End of Taxonomy  ======*/
 	
