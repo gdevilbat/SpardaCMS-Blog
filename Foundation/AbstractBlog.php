@@ -9,6 +9,11 @@ use Gdevilbat\SpardaCMS\Modules\Core\Http\Controllers\CoreController;
 
 use Gdevilbat\SpardaCMS\Modules\Appearance\Http\Controllers\MenuController;
 
+use Gdevilbat\SpardaCMS\Modules\Post\Entities\Post as Post_m;
+use Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\Terms as Terms_m;
+use Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy as TermTaxonomy_m;
+use Gdevilbat\SpardaCMS\Modules\Core\Repositories\Repository;
+
 /**
  * Class EloquentCoreRepository
  *
@@ -16,6 +21,16 @@ use Gdevilbat\SpardaCMS\Modules\Appearance\Http\Controllers\MenuController;
  */
 abstract class AbstractBlog extends CoreController implements InterfaceBlog
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->post_m = new Post_m;
+        $this->post_repository = new Repository(new Post_m);
+        $this->term_terms_m = new Terms_m;
+        $this->term_taxonomy_m = new TermTaxonomy_m;
+        $this->term_taxonomy_repository = new Repository(new TermTaxonomy_m);
+    }
+
     public function taxonomyPost(Request $request, $slug)
     {
         $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';

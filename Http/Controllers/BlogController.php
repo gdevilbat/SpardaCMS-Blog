@@ -8,21 +8,11 @@ use Illuminate\Http\Response;
 use Gdevilbat\SpardaCMS\Modules\Blog\Foundation\AbstractBlog;
 use Gdevilbat\SpardaCMS\Modules\Appearance\Http\Controllers\MenuController;
 
-use Gdevilbat\SpardaCMS\Modules\Post\Entities\Post as Post_m;
-use Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\Terms as Terms_m;
-use Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy as TermTaxonomy_m;
-use Gdevilbat\SpardaCMS\Modules\Core\Repositories\Repository;
-
 class BlogController extends AbstractBlog
 {
     public function __construct()
     {
         parent::__construct();
-        $this->post_m = new Post_m;
-        $this->post_repository = new Repository(new Post_m);
-        $this->term_terms_m = new Terms_m;
-        $this->term_taxonomy_m = new TermTaxonomy_m;
-        $this->term_taxonomy_repository = new Repository(new TermTaxonomy_m);
         $this->post_type = 'post';
     }
 
