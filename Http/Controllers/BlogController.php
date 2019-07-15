@@ -22,7 +22,7 @@ class BlogController extends AbstractBlog
      */
     public function index()
     {
-        $this->data['post'] = $this->post_m->where('post_slug', 'homepage')->first();
+        $this->data['post'] = $this->post_m->where(['post_slug' => 'homepage', 'post_status' => 'publish'])->first();
         $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
 
         if(empty($this->data['post']))
