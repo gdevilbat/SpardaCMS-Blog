@@ -16,6 +16,9 @@ class BlogControllerTest extends TestCase
      */
     public function testHomepage()
     {
+        $post = \Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::where(['post_type' => 'page', 'post_slug' => 'homepage'])->first();
+        $post->post_status = 'publish';
+        $post->save();
     	$response = $this->get('/');
 
         $response->assertSuccessful();

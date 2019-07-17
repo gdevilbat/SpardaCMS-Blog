@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['middleware' => 'appearance.navbars'], function() {
+Route::group(['middleware' => ['appearance.navbars', 'core.maintenance_mode']], function() {
 	Route::get('/', 'BlogController@index');
 	Route::get('{year}/{month}/{slug}.html', 'BlogController@blog');
 

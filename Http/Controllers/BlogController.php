@@ -27,8 +27,7 @@ class BlogController extends AbstractBlog
 
         if(empty($this->data['post']))
         {
-            return response()
-                ->view($path_view, $this->data, 404);
+            return $this->throwError(404);
         }
 
         if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/homepage.blade.php')))
@@ -75,8 +74,7 @@ class BlogController extends AbstractBlog
 
         if(empty($this->data['post']))
         {
-            return response()
-                ->view($path_view, $this->data, 404);
+            return $this->throwError(404);
         }
 
         if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->getKey().'.blade.php')))
@@ -111,8 +109,7 @@ class BlogController extends AbstractBlog
 
         if(empty($this->data['post']))
         {
-            return response()
-                ->view($path_view, $this->data, 404);
+            return $this->throwError(404);
         }
 
         if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->getKey().'.blade.php')))
@@ -134,5 +131,11 @@ class BlogController extends AbstractBlog
 
         return response()
             ->view($path_view, $this->data);
+    }
+
+    public function throwError($code)
+    {
+        return response()
+                ->view('appearance::general.'.$this->data['theme_public']->value.'.errors.'.$code, $this->data, $code);
     }
 }
