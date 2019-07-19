@@ -121,4 +121,10 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
     {
         return $this->post_type;
     }
+
+    public function throwError($code)
+    {
+        return response()
+                ->view('appearance::general.'.$this->data['theme_public']->value.'.errors.'.$code, $this->data, $code);
+    }
 }

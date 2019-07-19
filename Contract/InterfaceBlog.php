@@ -36,4 +36,7 @@ interface InterfaceBlog
      * @return $model
      */
     public function getTaxonomyChildrensDepth(\Gdevilbat\SpardaCMS\Modules\Appearance\Http\Controllers\MenuController $taxonomy);
+
+    //Error Code
+    public function throwError($code);
 }

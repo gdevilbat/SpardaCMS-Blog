@@ -53,7 +53,12 @@ class BlogController extends AbstractBlog
                                             ->where(['post_slug' => $slug, 'post_type' => 'post', 'post_status' => 'publish'])
                                             ->whereYear('created_at', $year)
                                             ->whereMonth('created_at', $month)
-                                            ->firstOrFail();
+                                            ->first();
+
+        if(empty($this->data['post']))
+        {
+            return $this->throwError(404);
+        }
 
         $this->data['recent_posts'] = $this->post_m->with('postMeta')
                                             ->where(['post_type' => 'post', 'post_status' => 'publish'])
@@ -71,11 +76,6 @@ class BlogController extends AbstractBlog
                                         }, 'taxonomies.term'])->taxonomies;
 
         $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
-
-        if(empty($this->data['post']))
-        {
-            return $this->throwError(404);
-        }
 
         if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->getKey().'.blade.php')))
         {
@@ -131,11 +131,5 @@ class BlogController extends AbstractBlog
 
         return response()
             ->view($path_view, $this->data);
-    }
-
-    public function throwError($code)
-    {
-        return response()
-                ->view('appearance::general.'.$this->data['theme_public']->value.'.errors.'.$code, $this->data, $code);
     }
 }
