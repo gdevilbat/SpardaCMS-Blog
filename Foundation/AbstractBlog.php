@@ -14,6 +14,8 @@ use Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\Terms as Terms_m;
 use Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy as TermTaxonomy_m;
 use Gdevilbat\SpardaCMS\Modules\Core\Repositories\Repository;
 
+use Auth;
+
 /**
  * Class EloquentCoreRepository
  *
@@ -48,7 +50,12 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
         $depth = $this->getTaxonomyChildrensDepth($taxonomy);
 
         $whereHas = 'taxonomies';
-        $query = $this->post_m->where(['post_type' => $this->getPostType(), 'post_status' => 'publish']);
+        $query = $this->post_m->where(['post_type' => $this->getPostType()]);
+
+        if(!Auth::check())
+        {
+            $query = $query->where('post_status',  'publish');
+        }
 
         for ($d=1; $d < $depth -1 ; $d++) { 
             $whereHas = $whereHas.'.taxonomyParents';
