@@ -63,7 +63,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
 
         $query->where(function($query) use ($taxonomy, $whereHas){
             $query->whereHas($whereHas, function($query) use ($taxonomy){
-                           $query->where('taxonomy', $taxonomy->taxonomy);
+                           $query->where(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey(), $taxonomy->getKey());
                     })
                   ->orWhereHas('taxonomies', function($query) use ($taxonomy){
                            $query->where(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey(), $taxonomy->getKey());
