@@ -89,6 +89,10 @@ class BlogController extends AbstractBlog
         {
             $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_slug;
         }
+        elseif(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'.blade.php')))
+        {
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type;
+        }
         else
         {
             $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.post';
