@@ -8,6 +8,8 @@ use Illuminate\Http\Response;
 use Gdevilbat\SpardaCMS\Modules\Blog\Foundation\AbstractBlog;
 use Gdevilbat\SpardaCMS\Modules\Appearance\Http\Controllers\MenuController;
 
+use Auth;
+
 class BlogController extends AbstractBlog
 {
     public function __construct()
@@ -22,13 +24,21 @@ class BlogController extends AbstractBlog
      */
     public function index()
     {
-        $this->data['post'] = $this->post_m->where(['post_slug' => 'homepage', 'post_status' => 'publish'])->first();
-        $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
+        $query = $this->post_m->where(['post_slug' => 'homepage']);
+
+        if(!Auth::check())
+        {
+            $query = $query->where('post_status',  'publish');
+        }
+
+        $this->data['post'] = $query->first();
 
         if(empty($this->data['post']))
         {
             return $this->throwError(404);
         }
+
+        $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
 
         if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/homepage.blade.php')))
         {
@@ -105,16 +115,23 @@ class BlogController extends AbstractBlog
 
     public function page($slug)
     {
-        $this->data['post'] = $this->post_m::with('postMeta')
-                                                ->where(['post_slug' => $slug, 'post_type' => 'page', 'post_status' => 'publish'])
+        $query = $this->post_m::with('postMeta')
+                                                ->where(['post_slug' => $slug, 'post_type' => 'page'])
                                                 ->first();
 
-        $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
+        if(!Auth::check())
+        {
+            $query = $query->where('post_status',  'publish');
+        }
+
+        $this->data['post'] = $query->first();
 
         if(empty($this->data['post']))
         {
             return $this->throwError(404);
         }
+
+        $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
 
         if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->getKey().'.blade.php')))
         {
