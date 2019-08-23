@@ -116,8 +116,7 @@ class BlogController extends AbstractBlog
     public function page($slug)
     {
         $query = $this->post_m::with('postMeta')
-                                                ->where(['post_slug' => $slug, 'post_type' => 'page'])
-                                                ->first();
+                                                ->where(['post_slug' => $slug, 'post_type' => 'page']);
 
         if(!Auth::check())
         {
