@@ -59,11 +59,16 @@ class BlogController extends AbstractBlog
 
     public function blog($year, $month, $slug)
     {
-        $this->data['post'] = $this->post_m::with('postMeta', 'author')
-                                            ->where(['post_slug' => $slug, 'post_type' => 'post', 'post_status' => 'publish'])
+        $query = $this->post_m::with('postMeta', 'author')
+                                            ->where(['post_slug' => $slug, 'post_type' => 'post'])
                                             ->whereYear('created_at', $year)
-                                            ->whereMonth('created_at', $month)
-                                            ->first();
+                                            ->whereMonth('created_at', $month);
+        if(!Auth::check())
+        {
+            $query = $query->where('post_status',  'publish');
+        }
+
+        $this->data['post'] = $query->first();
 
         if(empty($this->data['post']))
         {
