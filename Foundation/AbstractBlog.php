@@ -103,7 +103,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
             ->view($path_view, $this->data);
     }
 
-    public function getTaxonomyChildrensDepth(\Gdevilbat\SpardaCMS\Modules\Appearance\Http\Controllers\MenuController $taxonomy)
+    public function getTaxonomyChildrensDepth(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy $taxonomy)
     {
         $depth = 0;
 
