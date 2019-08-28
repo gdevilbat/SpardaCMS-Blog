@@ -120,6 +120,9 @@ class BlogController extends AbstractBlog
 
     public function page($slug)
     {
+        if($slug == 'homepage')
+            return redirect(url(''));
+        
         $query = $this->post_m::with('postMeta')
                                                 ->where(['post_slug' => $slug, 'post_type' => 'page']);
 
