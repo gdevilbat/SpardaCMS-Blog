@@ -32,7 +32,15 @@ class BlogControllerTest extends TestCase
 
     	$response = $this->get(url($post->post_slug));
 
-        $response->assertSuccessful();
+        if($post->post_slug == 'homepage')
+        {
+            $response->assertStatus(302);
+        }
+        else
+        {
+            $response->assertSuccessful();
+        }
+
     }
 
     public function testBlog()
@@ -48,7 +56,7 @@ class BlogControllerTest extends TestCase
         $response->assertSuccessful();
     }
 
-    /*public function testTaxonomy()
+    public function testTaxonomy()
     {
     	$post = \Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::where(['post_type' => 'post'])->first();
     	$post->post_status = 'publish';
@@ -57,5 +65,5 @@ class BlogControllerTest extends TestCase
     	$response = $this->get(url('category/uncategorized/'));
 
         $response->assertSuccessful();
-    }*/
+    }
 }
