@@ -75,13 +75,6 @@ class BlogController extends AbstractBlog
             return $this->throwError(404);
         }
 
-        $this->data['recent_posts'] = $this->post_m->with('postMeta')
-                                            ->where(['post_type' => 'post', 'post_status' => 'publish'])
-                                            ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
-                                            ->latest('created_at')
-                                            ->limit(5)
-                                            ->get();
-
         $this->data['post_categories'] = $this->data['post']->load(['taxonomies' => function($query){
                                             $query->where('taxonomy', 'category');
                                         }, 'taxonomies.term'])->taxonomies;
@@ -89,6 +82,55 @@ class BlogController extends AbstractBlog
         $this->data['post_tags'] = $this->data['post']->load(['taxonomies' => function($query){
                                             $query->where('taxonomy', 'tag');
                                         }, 'taxonomies.term'])->taxonomies;
+
+
+        /*===================================
+        =            Recent Post            =
+        ===================================*/
+        
+            $this->data['recent_posts'] = $this->post_m->with('postMeta')
+                                                ->where(['post_type' => 'post', 'post_status' => 'publish'])
+                                                ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
+                                                ->latest('created_at')
+                                                ->limit(5)
+                                                ->get();
+        
+        /*=====  End of Recent Post  ======*/
+        
+
+        /*===========================================
+        =            Related Post            =
+        ===========================================*/
+        
+            $query = $this->buildPostByTaxonomy($this->data['post_categories']->first())
+                                                ->with('postMeta')
+                                                ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
+                                                ->inRandomOrder()
+                                                ->limit(5);
+
+            $this->data['related_posts'] = $query->get();
+        
+        /*=====  End of Related Post  ======*/
+
+
+        /*===========================================
+        =            Recomended Post            =
+        ===========================================*/
+        
+            $query = $this->post_m->with('postMeta')
+                                                ->where(['post_type' =>  $this->getPostType()])
+                                                ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
+                                                ->inRandomOrder()
+                                                ->limit(5);
+
+            if(!Auth::check())
+            {
+                $query = $query->where('post_status',  'publish');
+            }
+
+            $this->data['recomended_posts'] = $query->get();
+        
+        /*=====  End of Recomended Post  ======*/
 
         $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
 
