@@ -47,32 +47,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
                 ->view($path_view, $this->data, 404);
         }
 
-        $depth = $this->getTaxonomyChildrensDepth($taxonomy);
-
-        $whereHas = 'taxonomies';
-        $query = $this->post_m->where(['post_type' => $this->getPostType()]);
-
-        if(!Auth::check())
-        {
-            $query = $query->where('post_status',  'publish');
-        }
-
-        for ($d=1; $d < $depth -1 ; $d++) { 
-            $whereHas = $whereHas.'.taxonomyParents';
-        }
-
-        $query->where(function($query) use ($taxonomy, $whereHas){
-            $query->whereHas($whereHas, function($query) use ($taxonomy){
-                           $query->where(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey(), $taxonomy->getKey());
-                    })
-                  ->orWhereHas('taxonomies', function($query) use ($taxonomy){
-                           $query->where(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey(), $taxonomy->getKey());
-                  });
-
-        });
-
-
-        $this->data['posts'] = $query->with($whereHas)->get();
+        $this->data['posts'] = $this->buildPostByTaxonomy($taxonomy)->get();
         $this->data['taxonomy'] = $taxonomy;
 
         if($this->data['posts']->count() == 0)
@@ -101,6 +76,35 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
 
         return response()
             ->view($path_view, $this->data);
+    }
+
+    public function buildPostByTaxonomy(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy $taxonomy)
+    {
+    	$depth = $this->getTaxonomyChildrensDepth($taxonomy);
+
+        $whereHas = 'taxonomies';
+        $query = $this->post_m->where(['post_type' => $this->getPostType()]);
+
+        if(!Auth::check())
+        {
+            $query = $query->where('post_status',  'publish');
+        }
+
+        for ($d=1; $d < $depth -1 ; $d++) { 
+            $whereHas = $whereHas.'.taxonomyParents';
+        }
+
+        $query->where(function($query) use ($taxonomy, $whereHas){
+            $query->whereHas($whereHas, function($query) use ($taxonomy){
+                           $query->where(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey(), $taxonomy->getKey());
+                    })
+                  ->orWhereHas('taxonomies', function($query) use ($taxonomy){
+                           $query->where(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey(), $taxonomy->getKey());
+                  });
+
+        });
+
+        return $query->with($whereHas);
     }
 
     public function getTaxonomyChildrensDepth(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy $taxonomy)

@@ -29,7 +29,12 @@ interface InterfaceBlog
      * @return $model
      */
     public function getCategoryWidget();
-    //public function blog();
+
+    /**
+     * @param  int $id
+     * @return $model
+     */
+    public function buildPostByTaxonomy(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy $taxonomy);
 
     /**
      * @param  int $id
