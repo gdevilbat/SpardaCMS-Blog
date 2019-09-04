@@ -83,7 +83,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
     	$depth = $this->getTaxonomyChildrensDepth($taxonomy);
 
         $whereHas = 'taxonomies';
-        $query = $this->post_m->where(['post_type' => $this->getPostType()]);
+        $query = $this->post_m;
 
         if(!Auth::check())
         {
@@ -94,13 +94,13 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
             $whereHas = $whereHas.'.taxonomyParents';
         }
 
-        $query->where(function($query) use ($taxonomy, $whereHas){
-            $query->whereHas($whereHas, function($query) use ($taxonomy){
-                           $query->where(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey(), $taxonomy->getKey());
-                    })
-                  ->orWhereHas('taxonomies', function($query) use ($taxonomy){
-                           $query->where(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey(), $taxonomy->getKey());
-                  });
+        $query = $query->where(function($query) use ($taxonomy, $whereHas){
+                        $query->whereHas($whereHas, function($query) use ($taxonomy){
+                                       $query->where(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey(), $taxonomy->getKey());
+                                })
+                              ->orWhereHas('taxonomies', function($query) use ($taxonomy){
+                                       $query->where(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::getPrimaryKey(), $taxonomy->getKey());
+                              });
 
         });
 
