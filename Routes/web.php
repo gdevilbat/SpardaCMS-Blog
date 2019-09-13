@@ -13,6 +13,7 @@
 
 Route::group(['middleware' => ['appearance.navbars', 'core.maintenance_mode']], function() {
 	Route::get('/', 'BlogController@index');
+	Route::get('sitemap/blog.xml', 'SitemapController@index');
 	Route::get('{year}/{month}/{slug}.html', 'BlogController@blog');
 
 	/*================================
