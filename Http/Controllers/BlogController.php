@@ -8,6 +8,9 @@ use Illuminate\Http\Response;
 use Gdevilbat\SpardaCMS\Modules\Blog\Foundation\AbstractBlog;
 use Gdevilbat\SpardaCMS\Modules\Appearance\Http\Controllers\MenuController;
 
+use Google_Client;
+use Google_Service_Customsearch;
+
 use Auth;
 
 class BlogController extends AbstractBlog
@@ -59,6 +62,24 @@ class BlogController extends AbstractBlog
 
     public function blog($year, $month, $slug)
     {
+        $KEY_FILE_LOCATION = base_path('spardastore-e62170df77a5.json');
+
+        $client = new Google_Client();
+        $client->setApplicationName("Nama Aplikasi");
+        $apiKey = "AIzaSyD4Mt5fWxANjaOSdUsx2g3tWoIKLjq0s_4"; // masukkan API Key
+        $client->setAuthConfig($KEY_FILE_LOCATION);
+        $client->setScopes(['https://www.googleapis.com/auth/cse']);
+        //$client->setDeveloperKey($apiKey);
+
+        $service = new Google_Service_Customsearch($client);
+        $arrOptions = array();
+        $arrOptions['cx'] = '005608933390545725656:nzdzqcozwxo'; // masukkan Search Engine ID
+        $q = 'laptop murah'; // contoh keyword yang ingin dicari
+        $result = $service->cse->listCse($q,$arrOptions);
+
+        $this->print_r($result->items);
+        die;
+
         $query = $this->post_m::with('postMeta', 'author')
                                             ->where(['post_slug' => $slug, 'post_type' => 'post'])
                                             ->whereYear('created_at', $year)
