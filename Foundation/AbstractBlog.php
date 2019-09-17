@@ -14,6 +14,9 @@ use Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\Terms as Terms_m;
 use Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy as TermTaxonomy_m;
 use Gdevilbat\SpardaCMS\Modules\Core\Repositories\Repository;
 
+use Google_Client;
+use Google_Service_Customsearch;
+
 use Auth;
 
 /**
@@ -76,6 +79,40 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
 
         return response()
             ->view($path_view, $this->data);
+    }
+
+    public function search(Request $request)
+    {
+        $KEY_FILE_LOCATION = base_path(env('GOOGLE_KEY'));
+
+        $client = new Google_Client();
+        $client->setApplicationName("Nama Aplikasi");
+        $apiKey = "AIzaSyD4Mt5fWxANjaOSdUsx2g3tWoIKLjq0s_4"; // masukkan API Key
+        $client->setAuthConfig($KEY_FILE_LOCATION);
+        $client->setScopes(['https://www.googleapis.com/auth/cse']);
+        //$client->setDeveloperKey($apiKey);
+
+        $service = new Google_Service_Customsearch($client);
+        $arrOptions = array();
+        $arrOptions['cx'] = env('SEARCH_ENGINE_ID'); // masukkan Search Engine ID
+        $q = $request->has('query') ? $request->input('query') : '' ;
+        $result = $service->cse->listCse($q,$arrOptions);
+
+        $this->data['googles'] = $result->items;
+
+        $this->data['posts_builder'] = Post_m::where(function($query) use ($q){
+                                            $query->where('post_title', 'LIKE', '%'.$q.'%')
+                                                 ->orWhere('post_content', 'LIKE', '%'.$q.'%');
+                                        })
+                                     ->where(function($query){
+                                        $query->where('post_type', 'post')
+                                              ->orWhere('post_type', 'product');
+                                     })
+                                     ->where('post_status', 'publish')
+                                     ->latest();
+
+        return response()
+                ->view('appearance::general.'.$this->data['theme_public']->value.'.content.search', $this->data);
     }
 
     public function buildPostByTaxonomy(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy $taxonomy)

@@ -38,5 +38,6 @@ Route::group(['middleware' => ['appearance.navbars', 'core.maintenance_mode']], 
 	/*=====  End of Taxonomy  ======*/
 	
 
+	Route::get('search', 'BlogController@search');
 	Route::get('{slug}', 'BlogController@page');
 });
