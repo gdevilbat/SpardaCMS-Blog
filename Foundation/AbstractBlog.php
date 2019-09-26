@@ -50,7 +50,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
                 ->view($path_view, $this->data, 404);
         }
 
-        $this->data['posts_builder'] = $this->buildPostByTaxonomy($taxonomy);
+        $this->data['posts_builder'] = $this->buildPostByTaxonomy($taxonomy)->latest();
         $this->data['taxonomy'] = $taxonomy;
 
         if($this->data['posts_builder']->count() == 0)
