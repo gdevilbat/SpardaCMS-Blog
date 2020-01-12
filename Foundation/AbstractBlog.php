@@ -26,14 +26,14 @@ use Auth;
  */
 abstract class AbstractBlog extends CoreController implements InterfaceBlog
 {
-    public function __construct()
+    public function __construct(\Gdevilbat\SpardaCMS\Modules\Post\Repositories\PostRepository $post_repository)
     {
         parent::__construct();
         $this->post_m = new Post_m;
-        $this->post_repository = new Repository(new Post_m);
+        $this->post_repository = $post_repository;
         $this->term_terms_m = new Terms_m;
         $this->term_taxonomy_m = new TermTaxonomy_m;
-        $this->term_taxonomy_repository = new Repository(new TermTaxonomy_m);
+        $this->term_taxonomy_repository = new Repository(new TermTaxonomy_m, resolve(\Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository::class));
     }
 
     public function taxonomyPost(Request $request, $slug)
@@ -128,7 +128,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
         }
 
         for ($d=0; $d < $depth -1 ; $d++) { 
-            $whereHas = $whereHas.'.taxonomyParents';
+            $whereHas = $whereHas.'.parent';
         }
 
         $query = $query->where(function($query) use ($taxonomy, $whereHas){
@@ -148,7 +148,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
     {
         $depth = 0;
 
-        foreach ($taxonomy->taxonomyChildrens as $children) 
+        foreach ($taxonomy->childrens as $children) 
         {
             $d = $this->getTaxonomyChildrensDepth($children);
             if($d > $depth){
