@@ -10,8 +10,8 @@
     ],
     "require": {
         "google/apiclient": "^2.4",
-        "gdevilbat/sparda-cms-core-module": "^5.7.2",
-        "gdevilbat/sparda-cms-appearance-module": "^3.0"
+        "gdevilbat/sparda-cms-core-module": "^5.8",
+        "gdevilbat/sparda-cms-appearance-module": "^4.0"
     },
     "extra": {
         "laravel": {
