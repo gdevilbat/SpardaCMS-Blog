@@ -47,7 +47,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
         if(empty($taxonomy))
         {
             return response()
-                ->view($path_view, $this->data, 404);
+                ->view('appearance::general.'.$this->data['theme_public']->value.'.errors.404', $this->data, 404);
         }
 
         $this->data['posts_builder'] = $this->buildPostByTaxonomy($taxonomy)->latest();
@@ -56,7 +56,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
         if($this->data['posts_builder']->count() == 0)
         {
             return response()
-                ->view($path_view, $this->data, 404);
+                ->view('appearance::general.'.$this->data['theme_public']->value.'.errors.404', $this->data, 404);
         }
 
         if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$request->segment(1).'-'.$taxonomy->getKey().'.blade.php')))
