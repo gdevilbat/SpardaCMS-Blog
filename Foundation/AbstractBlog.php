@@ -86,8 +86,8 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
         $KEY_FILE_LOCATION = base_path(env('GOOGLE_KEY'));
 
         $client = new Google_Client();
-        $client->setApplicationName("Nama Aplikasi");
-        $apiKey = "AIzaSyD4Mt5fWxANjaOSdUsx2g3tWoIKLjq0s_4"; // masukkan API Key
+        $client->setApplicationName(env('APP_NAME'));
+        //$apiKey = "AIzaSyD4Mt5fWxANjaOSdUsx2g3tWoIKLjq0s_4"; // masukkan API Key
         $client->setAuthConfig($KEY_FILE_LOCATION);
         $client->setScopes(['https://www.googleapis.com/auth/cse']);
         //$client->setDeveloperKey($apiKey);
