@@ -120,7 +120,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
     	$depth = $this->getTaxonomyChildrensDepth($taxonomy);
 
         $whereHas = 'taxonomies';
-        $query = $this->post_m;
+        $query = $this->post_repository->reloadModel($this->post_m)->with([]);
 
         if(!Auth::check())
         {
