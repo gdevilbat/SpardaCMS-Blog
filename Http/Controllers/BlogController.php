@@ -59,7 +59,7 @@ class BlogController extends AbstractBlog
 
     public function blog($year, $month, $slug)
     {
-        $query = $this->post_m::with('postMeta', 'author')
+        $query = $this->post_repository->with('postMeta', 'author')
                                             ->where(['post_slug' => $slug, 'post_type' => 'post'])
                                             ->whereYear('created_at', $year)
                                             ->whereMonth('created_at', $month);
@@ -88,7 +88,7 @@ class BlogController extends AbstractBlog
         =            Recent Post            =
         ===================================*/
         
-            $this->data['recent_posts'] = $this->post_m->with('postMeta')
+            $this->data['recent_posts'] = $this->post_repository->with('postMeta')
                                                 ->where(['post_type' => 'post', 'post_status' => 'publish'])
                                                 ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->latest('created_at')
@@ -117,7 +117,7 @@ class BlogController extends AbstractBlog
         =            Recomended Post            =
         ===========================================*/
         
-            $query = $this->post_m->with('postMeta')
+            $query = $this->post_repository->with('postMeta')
                                                 ->where(['post_type' =>  $this->getPostType()])
                                                 ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->inRandomOrder()
