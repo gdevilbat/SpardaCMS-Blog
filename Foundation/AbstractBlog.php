@@ -29,7 +29,8 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
     public function __construct(\Gdevilbat\SpardaCMS\Modules\Post\Repositories\PostRepository $post_repository)
     {
         parent::__construct();
-        $this->post_m = new Post_m;
+        $post_model = config('cms-post.Model');
+        $this->post_m = new $post_model;
         $this->post_repository = $post_repository;
         $this->term_terms_m = new Terms_m;
         $this->term_taxonomy_m = new TermTaxonomy_m;
