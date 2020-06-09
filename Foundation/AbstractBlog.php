@@ -128,7 +128,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
             $query = $query->where('post_status',  'publish');
         }
 
-        for ($d=1; $d < $depth -1 ; $d++) { 
+        for ($d=1; $d < $depth ; $d++) { 
             $whereHas = $whereHas.'.parent';
         }
 
