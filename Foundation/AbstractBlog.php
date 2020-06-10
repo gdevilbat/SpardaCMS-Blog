@@ -128,7 +128,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
             $query = $query->where('post_status',  'publish');
         }
 
-        for ($d=1; $d < $depth ; $d++) { 
+        for ($d=0; $d < $depth ; $d++) { 
             $whereHas = $whereHas.'.parent';
         }
 
@@ -149,15 +149,13 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
     {
         $depth = 0;
 
-        foreach ($taxonomy->childrens as $children) 
+        foreach ($taxonomy->childrens->where('taxonomy', $taxonomy->taxonomy) as $children) 
         {
             $d = $this->getTaxonomyChildrensDepth($children);
-            if($d > $depth){
-                $depth = $d;
-            }
+            $depth = $d+1;
         }
 
-        return 1+$depth;
+        return $depth;
     }
 
     public function getCategoryWidget()
