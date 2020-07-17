@@ -116,7 +116,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
                 ->view('appearance::general.'.$this->data['theme_public']->value.'.content.search', $this->data);
     }
 
-    public function buildPostByTaxonomy(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy $taxonomy)
+    final public function buildPostByTaxonomy(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy $taxonomy)
     {
     	$depth = $this->getTaxonomyChildrensDepth($taxonomy);
 
@@ -145,7 +145,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
         return $query->with($whereHas);
     }
 
-    public function getTaxonomyChildrensDepth(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy $taxonomy)
+    final public function getTaxonomyChildrensDepth(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy $taxonomy)
     {
         $depth = 0;
 
@@ -158,18 +158,18 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
         return $depth;
     }
 
-    public function getCategoryWidget()
+    final public function getCategoryWidget()
     {
         $menu = new MenuController;
         return json_decode(json_encode($menu->getTaxonomyNavbar()));
     }
 
-    public function getPostType()
+    final public function getPostType()
     {
         return $this->post_type;
     }
 
-    public function throwError($code)
+    final public function throwError($code)
     {
         return response()
                 ->view('appearance::general.'.$this->data['theme_public']->value.'.errors.'.$code, $this->data, $code);
