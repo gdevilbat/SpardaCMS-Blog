@@ -75,13 +75,9 @@ class BlogController extends AbstractBlog
             return $this->throwError(404);
         }
 
-        $this->data['post_categories'] = $this->data['post']->load(['taxonomies' => function($query){
-                                            $query->where('taxonomy', 'category');
-                                        }, 'taxonomies.term'])->taxonomies;
+        $this->data['post_categories'] = $this->getPostCategory($this->data['post']);
 
-        $this->data['post_tags'] = $this->data['post']->load(['taxonomies' => function($query){
-                                            $query->where('taxonomy', 'tag');
-                                        }, 'taxonomies.term'])->taxonomies;
+        $this->data['post_tags'] = $this->getPostTag($this->data['post']);
 
 
         /*===================================
@@ -158,5 +154,15 @@ class BlogController extends AbstractBlog
 
         return response()
             ->view($this->getPathView(), $this->data);
+    }
+
+    final protected function getCategoryType()
+    {
+        return 'category';
+    }
+
+    final protected function getTagType()
+    {
+        return 'tag';
     }
 }
