@@ -258,7 +258,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
         }
         else
         {
-            if(is_array($slug_array))
+            if(count($slug_array) > 0)
             {
                 array_pop($slug_array);
                 $file = $this->isCategoryFileAvailable($slug_array);
