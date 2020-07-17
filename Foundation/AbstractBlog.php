@@ -203,16 +203,16 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
         return $path_view;
     }
 
-    final protected function getPostCategory($post)
+    final protected function getPostCategory()
     {
-        return $post->load(['taxonomies' => function($query){
+        return $this->data['post']->load(['taxonomies' => function($query){
                                             $query->where('taxonomy', $this->getCategoryType());
                                         }, 'taxonomies.term'])->taxonomies;
     }
 
-    final protected function getPostTag($post)
+    final protected function getPostTag()
     {
-        return  $post->load(['taxonomies' => function($query){
+        return  $this->data['post']->load(['taxonomies' => function($query){
                                             $query->where('taxonomy', $this->getTagType());
                                         }, 'taxonomies.term'])->taxonomies;
     }
