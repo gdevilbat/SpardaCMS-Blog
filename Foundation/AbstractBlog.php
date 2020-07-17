@@ -179,17 +179,21 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
     {
         $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
 
-        if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->getKey().'.blade.php')))
+        /*if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->getKey().'.blade.php')))
         {
             $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type.'-'.$this->data['post']->getKey();
         }
         elseif(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$this->data['post']->post_slug.'.blade.php')))
         {
             $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type.'-'.$this->data['post']->post_slug;
-        }
-        elseif(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_slug.'.blade.php')))
+        }*/
+        if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_slug.'.blade.php')))
         {
             $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_slug;
+        }
+        elseif(!empty($this->getCategoryFile()))
+        {
+            $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.'.$this->data['post']->post_type.'-'.$this->getCategoryFile();
         }
         elseif(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'.blade.php')))
         {
@@ -215,5 +219,56 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
         return  $this->data['post']->load(['taxonomies' => function($query){
                                             $query->where('taxonomy', $this->getTagType());
                                         }, 'taxonomies.term'])->taxonomies;
+    }
+
+    private function getCategoryFile()
+    {
+       if(empty($this->data['post_categories']))
+            return false;
+
+        foreach ($this->data['post_categories'] as $key => $category) 
+        {
+            $slug_array = $this->getCategorySlug($category);
+        }
+
+        $file = $this->isCategoryFileAvailable($slug_array);
+
+        return $file;
+    }
+
+    private function getCategorySlug($category, $slug = [])
+    {
+        array_push($slug, $category->term->slug);
+
+        if(!empty($category->allTaxonomyParents))
+        {
+           $slug = $this->getCategorySlug($category->parent, $slug);
+        }
+
+        return collect($slug)->reverse()->toArray();
+    }
+
+    private function isCategoryFileAvailable($slug_array)
+    {
+        $slug_file = implode('-', $slug_array);
+
+        if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/'.$this->data['post']->post_type.'-'.$slug_file.'.blade.php')))
+        {
+            $file = $slug_file;
+        }
+        else
+        {
+            if(is_array($slug_array))
+            {
+                array_pop($slug_array);
+                $file = $this->isCategoryFileAvailable($slug_array);
+            }
+            else
+            {
+                $file = null;
+            }
+        }
+
+        return $file;
     }
 }
