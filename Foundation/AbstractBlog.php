@@ -95,9 +95,10 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
 
         $service = new Google_Service_Customsearch($client);
         $arrOptions = array();
-        $arrOptions['cx'] = env('SEARCH_ENGINE_ID'); // masukkan Search Engine ID
         $q = $request->has('query') ? $request->input('query') : '' ;
-        $result = $service->cse->listCse($q,$arrOptions);
+        $arrOptions['cx'] = env('SEARCH_ENGINE_ID'); // masukkan Search Engine ID
+        $arrOptions['q'] = $q; // masukkan Search Engine ID
+        $result = $service->cse->listCse($arrOptions);
 
         $this->data['googles'] = $result->items;
 
