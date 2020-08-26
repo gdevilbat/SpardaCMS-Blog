@@ -30,6 +30,8 @@ interface InterfaceBlog
      */
     public function getCategoryWidget();
 
+    public function getPostData(\Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy $taxonomy);
+
     /**
      * @param  int $id
      * @return $model

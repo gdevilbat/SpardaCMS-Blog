@@ -156,6 +156,11 @@ class BlogController extends AbstractBlog
             ->view($this->getPathView(), $this->data);
     }
 
+    public function getPostData($taxonomy)
+    {
+        return $this->buildPostByTaxonomy($taxonomy)->latest();
+    }
+
     final protected function getCategoryType()
     {
         return 'category';

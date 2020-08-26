@@ -51,7 +51,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
                 ->view('appearance::general.'.$this->data['theme_public']->value.'.errors.404', $this->data, 404);
         }
 
-        $this->data['posts_builder'] = $this->buildPostByTaxonomy($taxonomy)->latest();
+        $this->data['posts_builder'] = $this->getPostData($taxonomy);
         $this->data['taxonomy'] = $taxonomy;
 
         if($this->data['posts_builder']->count() == 0)
