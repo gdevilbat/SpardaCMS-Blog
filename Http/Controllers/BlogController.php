@@ -158,7 +158,7 @@ class BlogController extends AbstractBlog
 
     public function getPostData($taxonomy)
     {
-        return $this->buildPostByTaxonomy($taxonomy)->latest();
+        return $this->buildPostByTaxonomy($taxonomy)->latest($this->post_m->getTableName().'.created_at');
     }
 
     final protected function getCategoryType()
