@@ -84,10 +84,10 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
 
     public function search(Request $request)
     {
-        $KEY_FILE_LOCATION = base_path(env('GOOGLE_KEY'));
+        $KEY_FILE_LOCATION = base_path(config('cms-blog.GOOGLE_KEY'));
 
         $client = new Google_Client();
-        $client->setApplicationName(env('APP_NAME'));
+        $client->setApplicationName(config('app.name'));
         //$apiKey = "AIzaSyD4Mt5fWxANjaOSdUsx2g3tWoIKLjq0s_4"; // masukkan API Key
         $client->setAuthConfig($KEY_FILE_LOCATION);
         $client->setScopes(['https://www.googleapis.com/auth/cse']);
@@ -96,7 +96,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
         $service = new Google_Service_Customsearch($client);
         $arrOptions = array();
         $q = $request->has('query') ? $request->input('query') : '' ;
-        $arrOptions['cx'] = env('SEARCH_ENGINE_ID'); // masukkan Search Engine ID
+        $arrOptions['cx'] = config('cms-blog.SEARCH_ENGINE_ID'); // masukkan Search Engine ID
         $arrOptions['q'] = $q; // masukkan Search Engine ID
         $result = $service->cse->listCse($arrOptions);
 

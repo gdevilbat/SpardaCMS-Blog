@@ -46,10 +46,10 @@ class BlogServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('blog.php'),
+            __DIR__.'/../Config/config.php' => config_path('cms-blog.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php', 'blog'
+            __DIR__.'/../Config/config.php', 'cms-blog'
         );
     }
 
