@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "google/apiclient": "^2.4",
+        "google/apiclient": "^2.10",
         "gdevilbat/sparda-cms-core-module": "^5.8",
         "gdevilbat/sparda-cms-appearance-module": "^4.0"
     },

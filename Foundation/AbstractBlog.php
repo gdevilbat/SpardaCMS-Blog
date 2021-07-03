@@ -15,7 +15,7 @@ use Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy as TermTaxonomy_m
 use Gdevilbat\SpardaCMS\Modules\Core\Repositories\Repository;
 
 use Google_Client;
-use Google_Service_Customsearch;
+use Google_Service_CustomSearchAPI;
 
 use Auth;
 
@@ -93,7 +93,7 @@ abstract class AbstractBlog extends CoreController implements InterfaceBlog
         $client->setScopes(['https://www.googleapis.com/auth/cse']);
         //$client->setDeveloperKey($apiKey);
 
-        $service = new Google_Service_Customsearch($client);
+        $service = new Google_Service_CustomSearchAPI($client);
         $arrOptions = array();
         $q = $request->has('query') ? $request->input('query') : '' ;
         $arrOptions['cx'] = config('cms-blog.SEARCH_ENGINE_ID'); // masukkan Search Engine ID
