@@ -88,6 +88,11 @@ class BlogController extends AbstractBlog
                                                 ->where(['post_type' => 'post', 'post_status' => 'publish'])
                                                 ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->latest('created_at');
+
+            if(!Auth::check())
+            {
+                $query = $query->where('post_status',  'publish');
+            }
         
             $this->data['recent_posts_query'] = $query;
             $this->data['recent_posts'] = (clone $query)->limit(3)
@@ -104,6 +109,11 @@ class BlogController extends AbstractBlog
                                                 ->with('postMeta')
                                                 ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
                                                 ->inRandomOrder();
+
+            if(!Auth::check())
+            {
+                $query = $query->where('post_status',  'publish');
+            }
 
             $this->data['related_posts_query'] = $query;                              
             $this->data['related_posts'] = (clone $query)->limit(3)->get();
