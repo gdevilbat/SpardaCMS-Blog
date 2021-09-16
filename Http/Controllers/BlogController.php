@@ -83,12 +83,14 @@ class BlogController extends AbstractBlog
         /*===================================
         =            Recent Post            =
         ===================================*/
-        
-            $this->data['recent_posts'] = $this->post_repository->with('postMeta')
+
+            $query = $this->post_repository->with('postMeta')
                                                 ->where(['post_type' => 'post', 'post_status' => 'publish'])
                                                 ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
-                                                ->latest('created_at')
-                                                ->limit(3)
+                                                ->latest('created_at');
+        
+            $this->data['recent_posts_query'] = $query;
+            $this->data['recent_posts'] = (clone $query)->limit(3)
                                                 ->get();
         
         /*=====  End of Recent Post  ======*/
@@ -101,10 +103,10 @@ class BlogController extends AbstractBlog
             $query = $this->buildPostByTaxonomy($this->data['post_categories']->first())
                                                 ->with('postMeta')
                                                 ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
-                                                ->inRandomOrder()
-                                                ->limit(3);
+                                                ->inRandomOrder();
 
-            $this->data['related_posts'] = $query->get();
+            $this->data['related_posts_query'] = $query;                              
+            $this->data['related_posts'] = (clone $query)->limit(3)->get();
         
         /*=====  End of Related Post  ======*/
 
@@ -116,15 +118,15 @@ class BlogController extends AbstractBlog
             $query = $this->post_repository->with('postMeta')
                                                 ->where(['post_type' =>  $this->getPostType()])
                                                 ->where(\Gdevilbat\SpardaCMS\Modules\Post\Entities\Post::getPrimaryKey(), '!=', $this->data['post']->getKey())
-                                                ->inRandomOrder()
-                                                ->limit(3);
+                                                ->inRandomOrder();
 
             if(!Auth::check())
             {
                 $query = $query->where('post_status',  'publish');
             }
 
-            $this->data['recomended_posts'] = $query->get();
+            $this->data['recomended_posts_query'] = $query;
+            $this->data['recomended_posts'] = (clone $query)->limit(3)->get();
         
         /*=====  End of Recomended Post  ======*/
 
