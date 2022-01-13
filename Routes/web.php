@@ -20,20 +20,16 @@ Route::group(['middleware' => ['appearance.navbars', 'core.maintenance_mode']], 
 	=            Taxonomy            =
 	================================*/
 
-		if(!App::environment('testing'))
-		{
+		try {
 			$taxonomy = \Gdevilbat\SpardaCMS\Modules\Taxonomy\Entities\TermTaxonomy::groupBy('taxonomy')->pluck('taxonomy');
-
+	
 			foreach ($taxonomy as $key => $value) 
 			{
 				Route::get($value.'/{slug}', 'BlogController@taxonomyPost')->where('slug','[0-9A-Za-z-/]+');
 			}
-		}
-		else
-		{
+		} catch (\Exception $e) {
 			Route::get('category/{slug}', 'BlogController@taxonomyPost')->where('slug','[0-9A-Za-z-/]+');
 		}
-	
 	
 	/*=====  End of Taxonomy  ======*/
 	
