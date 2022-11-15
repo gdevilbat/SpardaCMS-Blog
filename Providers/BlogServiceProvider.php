@@ -62,7 +62,7 @@ class BlogServiceProvider extends ServiceProvider
     {
         $viewPath = resource_path('views/modules/blog');
 
-        $sourcePath = __DIR__.'/../resources/views';
+        $sourcePath = __DIR__.'/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -85,7 +85,7 @@ class BlogServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'blog');
         } else {
-            $this->loadTranslationsFrom(__DIR__ .'/../resources/lang', 'blog');
+            $this->loadTranslationsFrom(__DIR__ .'/../Resources/lang', 'blog');
         }
     }
 

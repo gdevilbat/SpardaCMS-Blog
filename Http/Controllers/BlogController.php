@@ -40,11 +40,11 @@ class BlogController extends AbstractBlog
 
         $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.templates.parent';
 
-        if(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/homepage.blade.php')))
+        if(file_exists(module_asset_path('appearance:Resources/views/general/'.$this->data['theme_public']->value.'/content/homepage.blade.php')))
         {
             $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.homepage';
         }
-        elseif(file_exists(module_asset_path('appearance:resources/views/general/'.$this->data['theme_public']->value.'/content/page.blade.php')))
+        elseif(file_exists(module_asset_path('appearance:Resources/views/general/'.$this->data['theme_public']->value.'/content/page.blade.php')))
         {
             $path_view = 'appearance::general.'.$this->data['theme_public']->value.'.content.page';
         }
