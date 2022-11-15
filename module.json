@@ -4,7 +4,7 @@
     "description": "",
     "keywords": [],
     "active": 1,
-    "order": 99999,
+    "priority": 99999,
     "providers": [
         "Gdevilbat\\SpardaCMS\\Modules\\Blog\\Providers\\BlogServiceProvider"
     ],
